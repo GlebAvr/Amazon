@@ -1,0 +1,5 @@
+# Cypress cache & output
+.cypress
+cypress/screenshots
+cypress/videos
+node_moudles
