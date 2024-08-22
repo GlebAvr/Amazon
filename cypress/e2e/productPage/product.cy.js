@@ -5,18 +5,18 @@ describe("Cart actions", () => {
   beforeEach(() => {
     cy.errorHandler();
     cy.intercept({ resourceType: /xhr|fetch/ }, { log: false });
-    cy.intercept('GET', 'https://aax-us-iad.amazon.com/x/**', { log: false }).as('stubbedRequest')
-    cy.intercept('GET', 'https://aax-us-iad.amazon.com/e/**', { log: false }).as('stubbedRequest')
+    cy.intercept('GET', 'https://aax-us-iad.amazon.com/x/**', { log: false }).as('stubbedRequestX');
+    cy.intercept('GET', 'https://aax-us-iad.amazon.com/e/**', { log: false }).as('stubbedRequestE');
     cy.visit("/dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&ref_=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&social_share=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&th", {timeout: 30000});
     cy.url().should('include', '/dp/B0CL61F39H');
     cy.get('body').should('be.visible');
     });
 
-//   afterEach(() => {
-//     cy.clearCookies();
-//     cy.clearLocalStorage();
+  afterEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
     
-//  });
+ });
 
   it("Should see product details", () => {
     productPage.productTitle.should('be.visible',{ timeout: 10000 } ).and("contain", "        PlayStation®5 console (slim)       ");
@@ -45,7 +45,7 @@ describe("Cart actions", () => {
       cy.log(`Inital price: ${price}`);
       productPage.qtyDropDownButton.click();
       productPage.qtyDropDownOption.contains("2").click();
-      cy.wait("@updateCart", {timeout: 50000}).its('response.statusCode').should('eq', 200);;
+      cy.wait("@updateCart", {timeout: 50000}).its('response.statusCode').should('eq', 200);
       productPage.subtotalCheckoutPrice.should('be.visible').invoke("text").then((newSubTotalText) => {
         const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
         expect(newSubTotal).to.eq(price * 2);
