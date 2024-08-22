@@ -1,7 +1,7 @@
 class ProductPage {
-    get productTitle() {return cy.get('[id="productTitle"]', {timeout: 10000})}
+    get productTitle() {return cy.get('[id="productTitle"]', {timeout: 10000, force: true})}
     get productPrice() {return cy.get('[id="corePrice_feature_div"]', {timeout: 10000})}    
-    get addToCartButton() {return  cy.get('[id="add-to-cart-button"]', {timeout: 10000})}
+    get addToCartButton() {return cy.get('[id="add-to-cart-button"]', {timeout: 10000})}
     get coveragePopUp() {return cy.get('[id="attach-warranty-header"]')}
     get noThanksButton() {return cy.get('[id="attachSiNoCoverage"]')}
     get addedToCartMessage() {return cy.get('[id="NATC_SMART_WAGON_CONF_MSG_SUCCESS"]', {timeout: 10000})}

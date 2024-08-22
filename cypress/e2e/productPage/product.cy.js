@@ -10,16 +10,22 @@ describe("Cart actions", () => {
     
   });
 
+  afterEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
+    cy.reload(); 
+ });
+
   it("Should see product details", () => {
     // cy.wait('@pageDom', {timeout: 20000})
     productPage.productTitle.eq(0).should('exist').and('be.visible').and("contain", "        PlayStation®5 console (slim)       ");
     productPage.productPrice.should("be.visible").and("exist");
   });
 
-  it("Should add to cart and change q-ty", () => {
+  it.only("Should add to cart and change q-ty", () => {
     cy.intercept("POST", "cart/ref=ox_sc_update_quantity*").as("stableDom");
     // cy.wait('@pageDom', { timeout: 20000 })
-    productPage.addToCartButton.click();
+    productPage.addToCartButton.should('be.visible').click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
     productPage.addedToCartMessage.should("be.visible").and(
