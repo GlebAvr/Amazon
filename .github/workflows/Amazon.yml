@@ -18,7 +18,6 @@ jobs:
         uses: cypress-io/github-action@v6.6.1
         with:
           browser: chrome
-          start: npm run start
           working-directory: .
         env: 
            CYPRESS_INSTALL_BINARY: "https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/127.0.6533.119/chrome-linux.zip"
