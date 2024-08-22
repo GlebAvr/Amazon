@@ -20,7 +20,7 @@ jobs:
           browser: chrome
           working-directory: .
       - name: Upload Cypress screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
          name: cypress-screenshots
          path: cypress/screenshots

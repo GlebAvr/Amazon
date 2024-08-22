@@ -10,7 +10,7 @@ describe("Cart actions", () => {
     cy.visit("/dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&ref_=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&social_share=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&th", {timeout: 30000});
     cy.url().should('include', '/dp/B0CL61F39H');
     cy.get('body').should('be.visible');
-  });
+    });
 
 //   afterEach(() => {
 //     cy.clearCookies();
@@ -49,6 +49,7 @@ describe("Cart actions", () => {
       productPage.subtotalCheckoutPrice.should('be.visible').invoke("text").then((newSubTotalText) => {
         const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
         expect(newSubTotal).to.eq(price * 2);
+        cy.screenshot()
       });
     });
   });
