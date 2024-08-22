@@ -19,5 +19,9 @@ jobs:
         with:
           browser: chrome
           working-directory: .
-        env: 
-           CYPRESS_INSTALL_BINARY: "https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/127.0.6533.119/chrome-linux.zip"
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v3
+        with:
+         name: cypress-screenshots
+         path: cypress/screenshots
+
