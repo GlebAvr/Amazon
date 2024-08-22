@@ -25,7 +25,8 @@ describe("Cart actions", () => {
   it.only("Should add to cart and change q-ty", () => {
     cy.intercept("POST", "cart/ref=ox_sc_update_quantity*").as("stableDom");
     // cy.wait('@pageDom', { timeout: 20000 })
-    productPage.addToCartButton.should('be.visible').click();
+    // productPage.addToCartButton.should('be.visible').click();
+    productPage.addToCartButton2.click()
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
     productPage.addedToCartMessage.should("be.visible").and(
