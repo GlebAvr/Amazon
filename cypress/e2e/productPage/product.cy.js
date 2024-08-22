@@ -5,19 +5,20 @@ describe("Cart actions", () => {
   beforeEach(() => {
     cy.errorHandler();
     cy.intercept({ resourceType: /xhr|fetch/ }, { log: false });
+    cy.intercept('GET', 'https://aax-us-iad.amazon.com/x/px/**', { statusCode: 200 }).as('stubbedRequest');
     // cy.intercept ('POST', 'https://www.amazon.com/dram/renderLazyLoaded').as('pageDom')
-    cy.visit("dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&ref_=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&social_share=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&th=1");
+    cy.visit("/dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&ref_=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&social_share=cm_sw_r_cp_ud_dp_543322QCKCNS3M07MSST&th");
       
   });
 
   afterEach(() => {
     cy.clearCookies();
     cy.clearLocalStorage();
-    cy.reload(); 
+    
  });
 
   it("Should see product details", () => {
-    productPage.productTitle.eq(0).should('exist').and('be.visible').and("contain", "        PlayStation®5 console (slim)       ");
+    productPage.productTitle.should('be.visible').and("contain", "        PlayStation®5 console (slim)       ");
     productPage.productPrice.should("be.visible").and("exist");
   });
 

@@ -1,12 +1,12 @@
 class ProductPage {
-    get productTitle() {return cy.get('[id="productTitle"]', {timeout: 10000, force: true})}
-    get productPrice() {return cy.get('[id="corePrice_feature_div"]', {timeout: 10000})}    
-    get addToCartButton() {return cy.get('[id="add-to-cart-button"]', {timeout: 10000})}
+    get productTitle() {return cy.get('[id="title"] [id="productTitle"]')}
+    get productPrice() {return cy.get('[id="corePrice_feature_div"]')}    
+    get addToCartButton() {return cy.get('[id="add-to-cart-button"]')}
     get addToCartButton2() {return cy.get('[name="submit.add-to-cart"]')}
     get coveragePopUp() {return cy.get('[id="attach-warranty-header"]')}
     get noThanksButton() {return cy.get('[id="attachSiNoCoverage"]')}
-    get addedToCartMessage() {return cy.get('[id="NATC_SMART_WAGON_CONF_MSG_SUCCESS"]', {timeout: 10000})}
-    get goToCartButton() {return cy.get('[id="sw-gtc"]', {timeout: 10000})}
+    get addedToCartMessage() {return cy.get('[id="NATC_SMART_WAGON_CONF_MSG_SUCCESS"]')}
+    get goToCartButton() {return cy.get('[id="sw-gtc"]')}
     get subtotalCheckoutPrice() {return cy.get('[id="sc-subtotal-amount-activecart"] [class="a-size-medium a-color-base sc-price sc-white-space-nowrap"]')}
     get qtyDropDownButton() {return cy.get('[class="a-dropdown-container"]')}
     get qtyDropDownOption() {return cy.get('[role="listbox"]')}
