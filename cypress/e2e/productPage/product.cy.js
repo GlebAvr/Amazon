@@ -6,19 +6,19 @@ describe("Cart actions", () => {
     cy.errorHandler();
     cy.intercept({ resourceType: /xhr|fetch/ }, { log: false });
     cy.intercept ('POST', 'https://www.amazon.com/dram/renderLazyLoaded').as('pageDom')
-    cy.visit("dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&ref_=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&social_share=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&th=1");
+    cy.visit("dp/B0CL61F39H?ref=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&ref_=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&social_share=cm_sw_r_cp_ud_dp_940FB5F25FKW0XRRR0V4&th=1", {timeout: 120000});
     
   });
 
   it("Should see product details", () => {
-    cy.wait('@pageDom', {timeout: 10000})
-    productPage.productTitle.eq(0).should("contain", "        PlayStation®5 console (slim)       ");
+    cy.wait('@pageDom', {timeout: 20000})
+    productPage.productTitle.eq(0).should('exist').and('be.visible').and("contain", "        PlayStation®5 console (slim)       ");
     productPage.productPrice.should("be.visible").and("exist");
   });
 
   it("Should add to cart and change q-ty", () => {
     cy.intercept("POST", "cart/ref=ox_sc_update_quantity*").as("stableDom");
-    cy.wait('@pageDom', { timeout: 10000 })
+    cy.wait('@pageDom', { timeout: 20000 })
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
@@ -38,7 +38,7 @@ describe("Cart actions", () => {
       cy.log(`Inital price: ${price}`);
       productPage.qtyDropDownButton.click();
       productPage.qtyDropDownOption.contains("2").click();
-      cy.wait("@stableDom", {timeout: 10000});
+      cy.wait("@stableDom", {timeout: 20000});
       productPage.subtotalCheckoutPrice.invoke("text").then((newSubTotalText) => {
         const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
         expect(newSubTotal).to.eq(price * 2);
@@ -47,7 +47,7 @@ describe("Cart actions", () => {
   });
 
   it("Should delete from cart", () => {
-    cy.wait('@pageDom', {timeout: 10000})
+    cy.wait('@pageDom', {timeout: 20000})
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
@@ -58,7 +58,7 @@ describe("Cart actions", () => {
   });
 
   it("Should ask to Sign in if buying as guest", () => {
-    cy.wait('@pageDom',{timeout: 10000})
+    cy.wait('@pageDom',{timeout: 20000})
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
