@@ -11,14 +11,14 @@ describe("Cart actions", () => {
   });
 
   it("Should see product details", () => {
-    cy.wait('@pageDom')
+    cy.wait('@pageDom', {timeout: 10000})
     productPage.productTitle.eq(0).should("contain", "        PlayStation®5 console (slim)       ");
     productPage.productPrice.should("be.visible").and("exist");
   });
 
   it("Should add to cart and change q-ty", () => {
     cy.intercept("POST", "cart/ref=ox_sc_update_quantity*").as("stableDom");
-    cy.wait('@pageDom')
+    cy.wait('@pageDom', { timeout: 10000 })
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
@@ -38,7 +38,7 @@ describe("Cart actions", () => {
       cy.log(`Inital price: ${price}`);
       productPage.qtyDropDownButton.click();
       productPage.qtyDropDownOption.contains("2").click();
-      cy.wait("@stableDom", { timeout: 10000 });
+      cy.wait("@stableDom", {timeout: 10000});
       productPage.subtotalCheckoutPrice.invoke("text").then((newSubTotalText) => {
         const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
         expect(newSubTotal).to.eq(price * 2);
@@ -47,7 +47,7 @@ describe("Cart actions", () => {
   });
 
   it("Should delete from cart", () => {
-    cy.wait('@pageDom')
+    cy.wait('@pageDom', {timeout: 10000})
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
@@ -58,7 +58,7 @@ describe("Cart actions", () => {
   });
 
   it("Should ask to Sign in if buying as guest", () => {
-    cy.wait('@pageDom')
+    cy.wait('@pageDom',{timeout: 10000})
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
