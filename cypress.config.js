@@ -7,6 +7,7 @@ module.exports = defineConfig({
     },
     "baseUrl": "https://www.amazon.com/",
     "viewportWidth": 1920,
-    "viewportHeight": 1080
+    "viewportHeight": 1080,
+    screenshotOnRunFailure: true
   },
 });
