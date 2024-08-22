@@ -1,5 +1,3 @@
-# Cypress cache & output
-.cypress
-cypress/screenshots
-cypress/videos
-node_moudles
+
+# Ignore node_modules
+node_modules/

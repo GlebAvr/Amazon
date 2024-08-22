@@ -1,4 +1,4 @@
-import websiteDetails from "../../fixtures/mainPage.json"
+import websiteDetails from "../../fixtures/mainPage.json";
 import productPage from "../page_objects/product.page";
 
 describe("Cart actions", () => {
@@ -14,60 +14,51 @@ describe("Cart actions", () => {
   });
 
   it("Should add to cart and change q-ty", () => {
+    cy.intercept("POST", "cart/ref=ox_sc_update_quantity*").as("stableDom");
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
-    productPage.addedToCartMessage
-      .should("be.visible")
-      .and(
-        "contain",
-        `
+    productPage.addedToCartMessage.should("be.visible").and(
+      "contain",
+      `
         
             Added to Cart
         
     `
-      );
+    );
     productPage.goToCartButton.click();
     cy.url().should("contain", websiteDetails.cartLink);
     productPage.productTitleInCart.should("contain", "PlayStation®5 console (slim)");
-    productPage.subtotalCheckoutPrice
-      .invoke("text")
-      .then((priceText) => {
-        const price = parseFloat(priceText.replace(/[$,]/g, ""));
-        cy.log(`Inital price: ${price}`);
-        productPage.qtyDropDownButton.click();
-        productPage.qtyDropDownOption.contains("2").click();
-        cy.wait(1500)
-        productPage.subtotalCheckoutPrice
-          .invoke("text")
-          .then((newSubTotalText) => {
-            const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
-            expect(newSubTotal).to.eq(price * 2);
-          });
+    productPage.subtotalCheckoutPrice.invoke("text").then((priceText) => {
+      const price = parseFloat(priceText.replace(/[$,]/g, ""));
+      cy.log(`Inital price: ${price}`);
+      productPage.qtyDropDownButton.click();
+      productPage.qtyDropDownOption.contains("2").click();
+      cy.wait("@stableDom", { timeout: 10000 });
+      productPage.subtotalCheckoutPrice.invoke("text").then((newSubTotalText) => {
+        const newSubTotal = parseFloat(newSubTotalText.replace(/[$,]/g, ""));
+        expect(newSubTotal).to.eq(price * 2);
       });
+    });
   });
-  
+
   it("Should delete from cart", () => {
     productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
     productPage.goToCartButton.click();
-    productPage.deleteButton.click()
-    cy.contains('Your Amazon Cart is empty.')
-    //cy.get('[class="a-size-medium a-color-base sc-price sc-white-space-nowrap"]').invoke('text').should('eq','$0.00')
-    productPage.subtotalCheckoutPrice.eq(0).invoke('text').should('eq','$0.00')
-
+    productPage.deleteButton.click();
+    cy.contains("Your Amazon Cart is empty.");
+    productPage.subtotalCheckoutPrice.eq(0).invoke("text").should("eq", "$0.00");
   });
 
   it("Should ask to Sign in if buying as guest", () => {
-  productPage.addToCartButton.click();
+    productPage.addToCartButton.click();
     productPage.coveragePopUp.should("be.visible").and("contain", " Add to your order ");
     productPage.noThanksButton.click();
     productPage.goToCartButton.click();
-    productPage.proceedToCheckoutButton.click()
-    cy.url().should('contain', '/ap/signin')
-    cy.contains('Sign in')
-
-  })
-
+    productPage.proceedToCheckoutButton.click();
+    cy.url().should("contain", "/ap/signin");
+    cy.contains("Sign in");
+  });
 });
